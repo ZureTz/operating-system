@@ -1,3 +1,18 @@
+# Executables
+*
+!*.*
+!*/
+
+#tempRunnerFile
+tempCodeRunnerFile.cc
+**/tempCodeRunnerFile.cc
+
+# DS Store Garbage
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+
 # Prerequisites
 *.d
 
