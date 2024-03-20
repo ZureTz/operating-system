@@ -1,3 +1,8 @@
 CompileFlags:
   Add: 
     - [-std=c17]
+
+
+Diagnostics:
+  Suppress: 
+    - 'misc-definitions-in-headers'
