@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "fork.h"
 #include "types.h"
 
 /*             Data Structure Utilities            */
@@ -51,11 +52,12 @@ void history_queue_push_front(history_head *head, history_node *node) {
   history_queue_pop_back(head);
 }
 
-void record_recent_history(history_head *head, char *argv[],
+void record_recent_history(history_head *head, int argc, char *argv[],
                            int command_index) {
   // initialize
   history_node *node = (history_node *)malloc(sizeof(history_node));
   node->index = command_index;
+  node->argc = argc;
   node->argv = argv;
   node->next = NULL;
 
@@ -72,40 +74,39 @@ void free_all_histories(history_head *head) {
   }
 }
 
-/*              Command processing              */
+/*             History command processing              */
 
 // Check if the command contains history commands
 // note: the program will not record command containing
 // history commands
-int is_history_command(char *argv[]) {
-  if (strcmp(argv[0], "history") == 0) {
+int is_history_command(const char *command) {
+  if (strcmp(command, "history") == 0) {
     return 1;
   }
-  if (strcmp(argv[0], "!!") == 0) {
+  if (strcmp(command, "!!") == 0) {
     return 1;
   }
-  if (argv[0][0] == '!' && isdigit(argv[0][1])) {
+  if (command[0] == '!' && isdigit(command[1])) {
     return 1;
   }
   return 0;
 }
 
-run_stat shell_history_impl(const char *command, history_head *head) {
+void shell_history_impl(int argc, char *argv[], history_head *head) {
   if (head == NULL) {
-    perror("Missing reference to history records.");
-    return EXIT_STAT;
+    fprintf(stderr, "Missing reference to history records.");
+    exit(1);
   }
 
-  if (strcmp(command, "history") == 0) {
+  if (head->first == NULL) {
+    printf("No history command yet\n");
+    return;
+  }
+
+  if (strcmp(argv[0], "history") == 0) {
     history_node *ptr = head->first;
-
-    if (ptr == NULL) {
-      printf("No history command yet\n");
-      return RUN_BUILTIN_COMMAND;
-    }
-
     while (ptr) {
-      printf("\t%d\t", ptr->index);
+      printf("%d\t", ptr->index);
       char **command_ptr = ptr->argv;
       while (command_ptr && *command_ptr) {
         printf("%s ", *command_ptr);
@@ -114,13 +115,46 @@ run_stat shell_history_impl(const char *command, history_head *head) {
       printf("\n");
       ptr = ptr->next;
     }
-    return RUN_BUILTIN_COMMAND;
+    return;
   }
 
-  if (strcmp(command, "!!") == 0) {
+  if (strcmp(argv[0], "!!") == 0) {
     // replace current argv with previous command
     // then continue the fork process
-    
+    int most_recent_argc = head->first->argc;
+    char **most_recent_argv = head->first->argv;
+
+    int wait_flag = 1;
+    // if last_token was "&", then argv[argc - 1] is null.
+    if (most_recent_argv[most_recent_argc - 1] == NULL) {
+      wait_flag = 0;
+    }
+    fork_new_process(most_recent_argv, wait_flag);
+
+    return;
+  }
+
+  if (argv[0][0] == '!' && isdigit(argv[0][1])) {
+    const int index = atoi(argv[0] + 1);
+    history_node *ptr = head->first;
+
+    while (ptr && ptr->index != index) {
+      ptr = ptr->next;
+    }
+
+    if (ptr == NULL) {
+      fprintf(stderr, "No such command in history.");
+      return;
+    }
+
+    int wait_flag = 1;
+    // if last_token was "&", then argv[argc - 1] is null.
+    if (ptr->argv[ptr->argc - 1] == NULL) {
+      wait_flag = 0;
+    }
+    fork_new_process(ptr->argv, wait_flag);
+
+    return;
   }
 }
 

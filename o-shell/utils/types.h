@@ -1,8 +1,8 @@
 #ifndef SHELL_TYPES_H
 #define SHELL_TYPES_H
 
-#include <stdlib.h>
 #include <stddef.h>
+#include <stdlib.h>
 
 #define MAX_LINE 80          /* The maximum length in rows */
 #define MAX_INPUT_SIZE 1024  /* max input size is 1024 chars*/
@@ -38,7 +38,8 @@ typedef struct run_stat {
 typedef struct history_node {
   // shows the index of the most recent histories
   int index;
-  
+
+  int argc;
   char **argv;
 
   struct history_node *next;
@@ -52,6 +53,5 @@ typedef struct history_head {
   history_node *first;
 
 } history_head;
-
 
 #endif

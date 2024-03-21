@@ -12,8 +12,9 @@
 
 /*                Built-in commands                */
 
-run_stat shell_history_commands(char *command, history_head *head) {
-  shell_history_impl(command, head);
+run_stat shell_history_commands(int argc, char *argv[],
+                                history_head *head) {
+  shell_history_impl(argc, argv, head);
   return RUN_BUILTIN_COMMAND;
 }
 
@@ -45,12 +46,12 @@ run_stat shell_exit() { return EXIT_STAT; }
 run_stat preprocess(int argc, char *argv[], history_head *head,
                     int *const command_index) {
   // history: show the most recent 10 commands
-  if (is_history_command(argv)) {
+  if (is_history_command(argv[0])) {
     (*command_index)--;
-    return shell_history_commands(argv[0], head);
+    return shell_history_commands(argc, argv, head);
   }
   // record the history
-  record_recent_history(head, argv, *command_index);
+  record_recent_history(head, argc, argv, *command_index);
 
   // built-in command list
   // 1. cd: change current woring directory
