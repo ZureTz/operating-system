@@ -1,10 +1,12 @@
+#ifndef SHELL_GET_TOKENS_H
+#define SHELL_GET_TOKENS_H
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_LINE 80 /* The maximum length command */
-#define MAX_INPUT_SIZE 1024
+#include "types.h"
 
 int tokenize(char *dest[], const size_t size, char *user_input) {
   const char *delimit = " \t\r\n\v\f"; // POSIX whitespace characters
@@ -15,13 +17,15 @@ int tokenize(char *dest[], const size_t size, char *user_input) {
     // Space must be reallocated before strcpy()
     dest[count] =
         (char *)realloc(dest[count], sizeof(char) * (strlen(token) + 4));
-    // Notice that we MUST use strcpy() because the strtok and user_input has it
-    // own scope. When user_scope is deleted, the result will be undefined
+    // Notice that we MUST use strcpy() because the strtok() and user_input has it
+    // own scope. When user_input is freed, the result will be undefined
     strcpy(dest[count], token);
     count++;
+
     token = strtok(NULL, delimit);
   }
-  // set the last string to NULL
+  // set the last string ("\n") to NULL
+  free(dest[count]);
   dest[count] = NULL;
 
   // returns the number of tokens
@@ -58,3 +62,6 @@ int get_tokens(char *argv[]) {
 
   return n_tokens;
 }
+
+
+#endif

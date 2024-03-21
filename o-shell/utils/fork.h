@@ -1,3 +1,6 @@
+#ifndef SHELL_FORK_H
+#define SHELL_FORK_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -40,3 +43,5 @@ int fork_new_process(char *const argv[], int wait_flag) {
   waitpid(pid, &child_stat_loc, WUNTRACED);
   return 0;
 }
+
+#endif

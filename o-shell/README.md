@@ -4,29 +4,36 @@ O-shell is a shell that performs basic functions of a UNIX shell (e.g. [bash](ht
 
 There are several functions supported:
 
+- cd
+- pwd
+- history
 - exit
 
 O-shell also supports commands that are already in operating system.
 
-
-
-## Installation and run
+## Installation
 
 ### Prerequisites
 
-- Your operating system must be GNU/Linux, UNIX or macOS, in other operating systems this program may work but this is not tested yet.
+Your operating system must be GNU/Linux, UNIX or macOS, in other operating systems this program may work but this is not tested yet.
 
 ### Compile
 
-If you are using GNU/Linux, UNIX or macOS, there are no more compile flags needed because all headers in the source code are included in the path by default by the operating system and compilers. 
-
-
+If you are using GNU/Linux, UNIX or macOS, there are no more compile flags needed since all headers in the source code are included in the path by default by the operating system and compilers.
 
 Open terminal in the folder, then run
 
 ```bash
-gcc o-shell.c -o o-shell
+gcc o-shell.c -o o-shell && chmod +x o-shell
 ```
+
+### Run in Terminal Directly
+
+```bash
+./o-shell
+```
+
+## Supported Features
 
 
 
@@ -44,6 +51,7 @@ Click URL to see my references from internet.
 
 - [The return code of `execvp()`](https://linux.die.net/man/3/execvp)
 
+- [GitHub@lnhutnam/simple-shell](https://github.com/lnhutnam/simple-shell)
+
 - [Writing a Unix Shell - Part I](https://indradhanush.github.io/blog/writing-a-unix-shell-part-1/)
 - [Writing a Unix Shell - Part II](https://indradhanush.github.io/blog/writing-a-unix-shell-part-2/)
-- 

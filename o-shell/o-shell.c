@@ -1,57 +1,52 @@
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 
 #include "utils/fork.h"
 #include "utils/get_tokens.h"
+#include "utils/preprocess.h"
+#include "utils/types.h"
 
-#define test 1
-
-// define cd function
-// char cwd[1024];
-// getcwd(cwd, sizeof(cwd));
-// printf("Current working directory is: %s\n", cwd);
+#define test 0
 
 int main(void) {
 
-  int should_run = 1; /* flag to determine when to exit program */
+  run_stat stat = {
+      .should_run = 1,  /* flag to determine when to exit program */
+      .should_fork = 1, /* fork as default except running built-in command */
+      .wait_flag = 1    /* wait by default */
+  };
 
-  // Maximum 40 arguments with one command
-  char **argv = (char **)calloc(sizeof(char *),
-                                MAX_LINE / 2 + 1); /* command line arguments */
+  history_head *histories = (history_head *)malloc(sizeof(history_head));
+  histories->n_nodes = 0, histories->first = NULL;
 
-  while (should_run) {
+  int command_index = 1;
+
+  while (stat.should_run) {
     printf("o-shell -> ");
     fflush(stdout);
+
+    // Maximum 40 arguments with one command
+    char **argv = (char **)calloc(
+        sizeof(char *), MAX_LINE / 2 + 1); /* command line arguments */
 
     // (0) read user input
     const int argc = get_tokens(argv);
     // if there is no token, just continue
     if (argc == 0) {
+      // no input, thus the command index wont change
       continue;
     }
 
     // Before forking a new process, a preprocessor is needed
-
-    // built-in command list
-
-    // 1. exit: no need to run anymore, exit normally
-    if (strcmp(argv[0], "exit") == 0) {
-      should_run = 0;
-      continue;
+    // this preprocesser can call shell built-in functions
+    stat = preprocess(argc, argv, histories, &command_index);
+    if (stat.should_run == 0) {
+      break;
     }
-
-    // check if the input token contains"&"
-    int is_equal = (strcmp(argv[argc - 1], "&") == 0);
-    int wait_flag = 1; // default: need to wait
-    // if last_token == "&",  no need to wait
-    if (is_equal) {
-      wait_flag = 0;
-      // also, this symbol should not be passed as a argument to the new process
-      // remove the last argument
-      argv[argc - 1] = NULL;
+    // built-in command finished
+    if (stat.should_fork == 0) {
+      command_index++;
+      continue;
     }
 
 #if test
@@ -63,14 +58,11 @@ int main(void) {
     }
 #endif
 
-    fork_new_process(argv, wait_flag);
+    command_index++;
+    fork_new_process(argv, stat.wait_flag);
   }
 
-  // free the input argv
-  for (int i = 0; i < MAX_LINE / 2 + 1; ++i) {
-    free(argv[i]);
-  }
-  free(argv);
+  free_all_histories(histories);
 
   return 0;
 }
