@@ -17,8 +17,8 @@ int tokenize(char *dest[], const size_t size, char *user_input) {
     // Space must be reallocated before strcpy()
     dest[count] =
         (char *)realloc(dest[count], sizeof(char) * (strlen(token) + 4));
-    // Notice that we MUST use strcpy() because the strtok() and user_input has it
-    // own scope. When user_input is freed, the result will be undefined
+    // Notice that we MUST use strcpy() because the strtok() and user_input has
+    // it own scope. When user_input is freed, the result will be undefined
     strcpy(dest[count], token);
     count++;
 
@@ -45,7 +45,7 @@ int is_empty(const char *str) {
 // put tokens in the pointer array and return the number of tokens
 // if returns 0, this means there is no input or input only contains with spaces
 int get_tokens(char *argv[]) {
-  char *user_input = (char *)calloc(sizeof(char), MAX_INPUT_SIZE);
+  char *user_input = (char *)calloc(MAX_INPUT_SIZE, sizeof(char));
 
   fgets(user_input, MAX_INPUT_SIZE, stdin);
 
@@ -62,6 +62,5 @@ int get_tokens(char *argv[]) {
 
   return n_tokens;
 }
-
 
 #endif

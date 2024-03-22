@@ -26,8 +26,8 @@ int main(void) {
     fflush(stdout);
 
     // Maximum 40 arguments with one command
-    char **argv = (char **)calloc(
-        sizeof(char *), MAX_LINE / 2 + 1); /* command line arguments */
+    char **argv = (char **)calloc(MAX_LINE / 2 + 1,
+                                  sizeof(char *)); /* command line arguments */
 
     // (0) read user input
     const int argc = get_tokens(argv);
