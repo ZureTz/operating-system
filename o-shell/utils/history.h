@@ -12,20 +12,33 @@
 
 /*             Data Structure Utilities            */
 
+void free_single_argv(char **argv) {
+  char **ptr = argv;
+  while (ptr && *ptr != NULL) {
+    free(*ptr);
+    ptr++;
+  }
+  free(argv);
+}
+
 void free_history_node(history_node *node) {
   if (node == NULL) {
     return;
   }
 
   // free the string tokens
-  char **ptr = node->argv;
-  while (ptr && *ptr != NULL) {
-    free(*ptr);
-    ptr++;
-  }
-  free(node->argv);
+  free_single_argv(node->argv);
 
   free(node);
+}
+
+void free_all_histories(history_head *head) {
+  history_node *node = head->first;
+  while (node) {
+    history_node *temp = node;
+    node = node->next;
+    free_history_node(temp);
+  }
 }
 
 void history_queue_pop_back(history_head *head) {
@@ -65,15 +78,6 @@ void record_recent_history(history_head *head, int argc, char *argv[],
   history_queue_push_front(head, node);
 }
 
-void free_all_histories(history_head *head) {
-  history_node *node = head->first;
-  while (node) {
-    history_node *temp = node;
-    node = node->next;
-    free_history_node(temp);
-  }
-}
-
 /*             History command processing              */
 
 // Check if the command contains history commands
@@ -94,15 +98,17 @@ int is_history_command(const char *command) {
 
 void shell_history_impl(int argc, char *argv[], history_head *head) {
   if (head == NULL) {
-    fprintf(stderr, "Missing reference to history records.");
+    fprintf(stderr, "Missing reference to history records.\n");
     exit(1);
   }
 
   if (head->first == NULL) {
-    printf("No history command yet\n");
+    printf("No history command yet.\n");
     return;
   }
 
+  // Since the history command is not recorded by history link list,
+  // we must free the command manually to prevent memory leak.
   if (strcmp(argv[0], "history") == 0) {
     history_node *ptr = head->first;
     while (ptr) {
@@ -115,6 +121,9 @@ void shell_history_impl(int argc, char *argv[], history_head *head) {
       printf("\n");
       ptr = ptr->next;
     }
+
+    // after execution, free memory
+    free_single_argv(argv);
     return;
   }
 
@@ -131,19 +140,24 @@ void shell_history_impl(int argc, char *argv[], history_head *head) {
     }
     fork_new_process(most_recent_argv, wait_flag);
 
+    // after execution, free memory
+    free_single_argv(argv);
     return;
   }
 
   if (argv[0][0] == '!' && isdigit(argv[0][1])) {
+    // convert the command into integer
     const int index = atoi(argv[0] + 1);
     history_node *ptr = head->first;
 
+    // find the corresponding index
     while (ptr && ptr->index != index) {
       ptr = ptr->next;
     }
 
+    // if not found:
     if (ptr == NULL) {
-      fprintf(stderr, "No such command in history.");
+      fprintf(stderr, "No such command in history.\n");
       return;
     }
 
@@ -154,6 +168,8 @@ void shell_history_impl(int argc, char *argv[], history_head *head) {
     }
     fork_new_process(ptr->argv, wait_flag);
 
+    // after execution, free memory
+    free_single_argv(argv);
     return;
   }
 }

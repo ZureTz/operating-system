@@ -15,11 +15,11 @@ typedef struct run_stat {
   int wait_flag;
 } run_stat;
 
-// default:
+// default behavior
 #define FORK_AND_WAIT                                                          \
   (run_stat) { 1, 1, 1 }
 
-// detecting '&'
+// detecting '&', no wait
 #define FORK_AND_NO_WAIT                                                       \
   (run_stat) { 1, 1, 0 }
 
@@ -32,6 +32,7 @@ typedef struct run_stat {
   (run_stat) { 0, 0, 0 }
 
 /*           Link list that acts as a stack to store history commands         */
+/*                 Implemented using single linked list                       */
 
 #define MAX_N_HISTORIES 10
 

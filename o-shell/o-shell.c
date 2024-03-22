@@ -43,7 +43,7 @@ int main(void) {
     if (stat.should_run == 0) {
       break;
     }
-    // built-in command finished
+    // built-in command finished, no need to fork anymore
     if (stat.should_fork == 0) {
       command_index++;
       continue;

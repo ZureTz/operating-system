@@ -2,14 +2,7 @@
 
 O-shell is a shell that performs basic functions of a UNIX shell (e.g. [bash](https://www.gnu.org/software/bash/), [zsh](https://www.zsh.org/))
 
-There are several functions supported:
-
-- cd
-- pwd
-- history
-- exit
-
-O-shell also supports commands that are already in operating system.
+There are several built-in commands supported and O-shell also supports commands that are already in operating system path.
 
 ## Installation
 
@@ -19,27 +12,57 @@ Your operating system must be GNU/Linux, UNIX or macOS, in other operating syste
 
 ### Compile
 
-If you are using GNU/Linux, UNIX or macOS, there are no more compile flags needed since all headers in the source code are included in the path by default by the operating system and compilers.
+If you are using GNU/Linux, UNIX or macOS, there are no more compile flags needed because all headers in the source code are included in the path by default by the operating system and compilers.
 
-Open terminal in the folder, then run
+Open system terminal in the folder, then run:
 
 ```bash
 gcc o-shell.c -o o-shell && chmod +x o-shell
 ```
 
-### Run in Terminal Directly
+### Run 
+
+You can run O-shell in system terminal directly:
 
 ```bash
 ./o-shell
 ```
 
-## Supported Features
+If the program runs normally, it shows the prompt  `o-shell -> `.
 
+![init](./screenshots/init.png)
 
+## Features
+
+### Built-in commands
+
+#### `pwd`
+
+This command shows the current working directory using system call `getcwd()`.
+
+When executing this command, O-shell prints the working directory in the terminal.
+
+![pwd](./screenshots/pwd.png)
+
+#### `cd`
+
+This command changes the current working directory using system call `chdir()`.
+
+When executing this command, O-shell changes the working directory. If the given directory is not found, O-shell will print the error using `perror()`.
+
+This command can be combined with `pwd` and `ls` to access the whole file system.
+
+![cd](./screenshots/cd.png)
+
+#### `exit`
+
+This command terminates the O-shell process.
+
+![exit](./screenshots/exit.png)
 
 ## References
 
-Click URL to see my references from internet.
+Click URL to see my references from Internet.
 
 - Textbook (Operating System Concepts 9th Edition)
 
