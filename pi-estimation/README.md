@@ -9,7 +9,7 @@ Your Operating System must be POSIX compatible. This program will not run on Win
 ### Compile and Run
 
 ```bash
-clang src/main.c -o main
+clang -pthread src/main.c -o main
 ./main
 ```
 

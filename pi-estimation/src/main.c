@@ -2,12 +2,12 @@
   Using multithread to estimate π (Monte Carlo technique)
 */
 
+#include <fcntl.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/fcntl.h>
-#include <sys/semaphore.h>
 
 // Number of threads
 #define NUM_THREADS 8
