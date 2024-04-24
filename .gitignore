@@ -3,6 +3,10 @@
 !*.*
 !*/
 
+# Except Makefile
+!Makefile
+!makefile
+
 #tempRunnerFile
 tempCodeRunnerFile.cc
 **/tempCodeRunnerFile.cc
