@@ -109,9 +109,9 @@ void *customer_activity(void *param) {
     }
     // Do something
     // ...
-    
+
     sleep(1);
-    
+
     // ...
 
     release_resources(customer_num, release);
