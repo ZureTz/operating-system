@@ -1,0 +1,8 @@
+If:
+  PathMatch: 
+    - .*\.cc
+    - .*\.cpp
+    - .*\.hpp
+
+CompileFlags:
+  Add: [-std=c++20]
