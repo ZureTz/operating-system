@@ -303,7 +303,7 @@ void OPTImpl(const std::vector<int> &referenceString, const int frameSize) {
 
     // Not found, print error
     if (toReplaceIndexInFrame == -1) {
-      std::cerr << "Error: toReplaceIndexInFrame not found in FIFOImpl\n";
+      std::cerr << "Error: toReplaceIndexInFrame not found in OPTImpl\n";
       exit(1);
     }
 
@@ -424,7 +424,7 @@ void LRUImpl(const std::vector<int> &referenceString, const int frameSize) {
 
     // Not found, print error
     if (toReplaceIndexInFrame == -1) {
-      std::cerr << "Error: toReplaceIndexInFrame not found in FIFOImpl\n";
+      std::cerr << "Error: toReplaceIndexInFrame not found in LRUImpl\n";
       exit(1);
     }
 
@@ -536,7 +536,7 @@ void CLOCKImpl(const std::vector<int> &referenceString, const int frameSize) {
 
     // Not found, print error
     if (toReplaceIndexInFrame == -1) {
-      std::cerr << "Error: toReplaceIndexInFrame not found in FIFOImpl\n";
+      std::cerr << "Error: toReplaceIndexInFrame not found in CLOCKImpl\n";
       exit(1);
     }
 
