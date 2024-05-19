@@ -176,12 +176,12 @@ void FIFOImpl(const std::vector<int> &referenceString, const int frameSize) {
       exit(1);
     }
 
-    const int replcedPageNumber = frame[toReplaceIndexInFrame];
+    const int replacedPageNumber = frame[toReplaceIndexInFrame];
 
     // Found the index, replace
     frame[toReplaceIndexInFrame] = referenceString[i];
 
-    logging(pageFaultFlag, i, replcedPageNumber);
+    logging(pageFaultFlag, i, replacedPageNumber);
   }
 }
 
@@ -307,11 +307,11 @@ void OPTImpl(const std::vector<int> &referenceString, const int frameSize) {
       exit(1);
     }
 
-    const int replcedPageNumber = frame[toReplaceIndexInFrame];
+    const int replacedPageNumber = frame[toReplaceIndexInFrame];
 
     // Found the index, replace
     frame[toReplaceIndexInFrame] = referenceString[i];
-    logging(pageFaultFlag, i, replcedPageNumber);
+    logging(pageFaultFlag, i, replacedPageNumber);
   }
 }
 
@@ -428,11 +428,11 @@ void LRUImpl(const std::vector<int> &referenceString, const int frameSize) {
       exit(1);
     }
 
-    const int replcedPageNumber = frame[toReplaceIndexInFrame];
+    const int replacedPageNumber = frame[toReplaceIndexInFrame];
 
     // Found the index, replace
     frame[toReplaceIndexInFrame] = referenceString[i];
-    logging(pageFaultFlag, i, replcedPageNumber);
+    logging(pageFaultFlag, i, replacedPageNumber);
   }
 }
 
@@ -540,13 +540,13 @@ void CLOCKImpl(const std::vector<int> &referenceString, const int frameSize) {
       exit(1);
     }
 
-    const int replcedPageNumber = frame[toReplaceIndexInFrame].pageNumber;
+    const int replacedPageNumber = frame[toReplaceIndexInFrame].pageNumber;
 
     // Found the index, replace
     frame[toReplaceIndexInFrame].pageNumber = referenceString[i];
     // then set the reference bit to 1
     frame[toReplaceIndexInFrame].referenceBit = true;
-    logging(pageFaultFlag, i, replcedPageNumber);
+    logging(pageFaultFlag, i, replacedPageNumber);
   }
 }
 

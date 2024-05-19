@@ -24,7 +24,7 @@ Here's a breakdown of the code:
 
 1. **Function Definitions**
 
-- `generateReferenceString`: This function (not provided in the code snippet) generates a random sequence of page references, which simulates the memory access pattern of a process.
+- `generateReferenceString`: This function generates a random sequence of page references, which simulates the memory access pattern of a process.
 - `FIFOImpl`: This function implements the FIFO algorithm. It maintains a queue of page frames and replaces the oldest page (the one that entered the queue first) when a page fault occurs.
 - `OPTImpl`: This function implements the OPT algorithm, which is an optimal algorithm but not practical  since it requires knowing the entire future reference string. It replaces the page that will not be used for the longest time in the future.
 - `LRUImpl`: This function implements the LRU algorithm. It keeps track of the most recently used pages and replaces the least recently used page when a page fault occurs.
